@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Janmesh Mokal — Data Analyst & .NET Developer</title>
+<meta name="description" content="Portfolio of Janmesh Mokal — Data Analyst with a software engineering background in .NET, SQL, and Power BI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1220;
+    --surface:#131B2E;
+    --surface-2:#0F1626;
+    --line:#232E47;
+    --text:#E7EAF0;
+    --muted:#8A93A6;
+    --accent:#37D6C4;
+    --accent-dim:#37D6C42a;
+    --accent2:#F2B441;
+    --radius:10px;
+    --mono:'JetBrains Mono', monospace;
+    --display:'Space Grotesk', sans-serif;
+    --body:'Inter', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      radial-gradient(circle at 15% 8%, #37D6C41a 0%, transparent 40%),
+      radial-gradient(circle at 85% 92%, #F2B44112 0%, transparent 40%);
+    pointer-events:none;
+    z-index:0;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:920px; margin:0 auto; padding:0 24px; position:relative; z-index:1;}
+
+  /* NAV */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:#0B1220dd;
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; padding:16px 24px;}
+  .brand{font-family:var(--mono); font-weight:600; font-size:14px; letter-spacing:0.02em; color:var(--text);}
+  .brand span{color:var(--accent);}
+  .navlinks{display:flex; gap:28px; font-family:var(--mono); font-size:13px;}
+  .navlinks a{color:var(--muted); transition:color .2s;}
+  .navlinks a:hover{color:var(--accent);}
+  .navlinks a.resume-link{color:var(--accent2);}
+
+  /* HERO / QUERY CONSOLE */
+  header.hero{padding:72px 0 56px;}
+  .eyebrow{font-family:var(--mono); font-size:13px; color:var(--muted); margin-bottom:18px;}
+  .eyebrow::before{content:"$ "; color:var(--accent);}
+
+  .console{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:0 20px 60px -20px #00000080;
+  }
+  .console-bar{
+    display:flex; align-items:center; gap:8px;
+    padding:11px 16px;
+    background:var(--surface-2);
+    border-bottom:1px solid var(--line);
+  }
+  .dot{width:10px; height:10px; border-radius:50%;}
+  .dot:nth-child(1){background:#F2604A;}
+  .dot:nth-child(2){background:#F2B441;}
+  .dot:nth-child(3){background:#37D6C4;}
+  .console-title{margin-left:8px; font-family:var(--mono); font-size:12px; color:var(--muted);}
+  .console-body{padding:26px 24px 30px; font-family:var(--mono); font-size:14.5px;}
+  .console-body .prompt{color:var(--muted);}
+  .console-body .kw{color:var(--accent2);}
+  .console-body .str{color:var(--accent);}
+  .console-body .fn{color:#9AA7FF;}
+  #typed-query{white-space:pre-wrap;}
+  .cursor{display:inline-block; width:8px; height:16px; background:var(--accent); vertical-align:text-bottom; animation:blink 1s step-end infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  .result-row{
+    margin-top:20px; padding-top:18px;
+    border-top:1px dashed var(--line);
+    opacity:0; transform:translateY(6px);
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .result-row.show{opacity:1; transform:translateY(0);}
+  .result-row .col-label{color:var(--muted); font-size:12px;}
+  .result-name{font-family:var(--display); font-size:clamp(30px,5vw,44px); font-weight:700; margin:4px 0 8px; color:var(--text);}
+  .result-role{color:var(--accent); font-size:16px; margin-bottom:14px;}
+  .result-desc{font-family:var(--body); color:var(--muted); font-size:15px; max-width:60ch;}
+
+  .hero-links{display:flex; gap:14px; margin-top:26px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono); font-size:13px;
+    padding:10px 18px; border-radius:8px;
+    border:1px solid var(--line);
+    color:var(--text);
+    transition:border-color .2s, transform .2s, background .2s;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn:hover{border-color:var(--accent); transform:translateY(-1px); background:var(--accent-dim);}
+  .btn.primary{background:var(--accent); color:#0B1220; border-color:var(--accent); font-weight:600;}
+  .btn.primary:hover{background:#4EE8D5;}
+
+  /* SECTION HEADERS — SQL comment style */
+  section{padding:52px 0;}
+  .sec-title{
+    font-family:var(--mono); font-size:13px; color:var(--accent);
+    margin-bottom:26px; letter-spacing:0.02em;
+  }
+  .sec-title::before{content:"-- "; color:var(--muted);}
+  .sec-heading{font-family:var(--display); font-size:clamp(22px,3vw,28px); font-weight:600; margin-bottom:6px;}
+  .sec-sub{color:var(--muted); font-size:14.5px; margin-bottom:30px; max-width:65ch;}
+
+  /* SKILLS */
+  .skill-table{
+    border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+  }
+  .skill-row{
+    display:grid; grid-template-columns:160px 1fr;
+    border-bottom:1px solid var(--line);
+  }
+  .skill-row:last-child{border-bottom:none;}
+  .skill-key{
+    font-family:var(--mono); font-size:12.5px; color:var(--accent2);
+    padding:16px 18px; background:var(--surface-2);
+    border-right:1px solid var(--line);
+    display:flex; align-items:center;
+  }
+  .skill-val{padding:16px 18px; display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .chip{
+    font-family:var(--mono); font-size:12.5px;
+    background:var(--surface); border:1px solid var(--line);
+    color:var(--text); padding:5px 10px; border-radius:6px;
+  }
+
+  /* EXPERIENCE */
+  .job{
+    border-left:2px solid var(--line);
+    padding:2px 0 34px 26px; margin-left:6px; position:relative;
+  }
+  .job:last-child{padding-bottom:0;}
+  .job::before{
+    content:""; position:absolute; left:-6.5px; top:6px;
+    width:10px; height:10px; border-radius:50%;
+    background:var(--bg); border:2px solid var(--accent);
+  }
+  .job-head{display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:4px;}
+  .job-title{font-family:var(--display); font-weight:600; font-size:17px;}
+  .job-meta{font-family:var(--mono); font-size:12.5px; color:var(--muted);}
+  .job-company{color:var(--accent); font-size:14px; margin-bottom:10px;}
+  .job ul{list-style:none; display:flex; flex-direction:column; gap:7px;}
+  .job li{font-size:14.5px; color:var(--text); padding-left:18px; position:relative;}
+  .job li::before{content:"›"; position:absolute; left:0; color:var(--accent2);}
+
+  /* PROJECTS */
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media (max-width:680px){.grid{grid-template-columns:1fr;}}
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px; transition:border-color .2s, transform .2s;
+  }
+  .card:hover{border-color:var(--accent); transform:translateY(-2px);}
+  .card-schema{font-family:var(--mono); font-size:11.5px; color:var(--muted); margin-bottom:10px;}
+  .card-title{font-family:var(--display); font-size:17px; font-weight:600; margin-bottom:10px;}
+  .card ul{list-style:none; display:flex; flex-direction:column; gap:6px; margin-bottom:12px;}
+  .card li{font-size:13.5px; color:var(--muted); padding-left:14px; position:relative;}
+  .card li::before{content:"·"; position:absolute; left:0; color:var(--accent);}
+  .card-tags{display:flex; flex-wrap:wrap; gap:6px;}
+  .tag{font-family:var(--mono); font-size:11px; color:var(--accent2); border:1px solid #F2B44140; padding:3px 8px; border-radius:5px;}
+
+  /* EDUCATION */
+  .edu-row{display:flex; justify-content:space-between; align-items:baseline; padding:14px 0; border-bottom:1px solid var(--line); flex-wrap:wrap; gap:6px;}
+  .edu-row:last-child{border-bottom:none;}
+  .edu-name{font-weight:500; font-size:15px;}
+  .edu-sub{font-size:13px; color:var(--muted);}
+  .edu-date{font-family:var(--mono); font-size:12.5px; color:var(--accent);}
+
+  /* CONTACT / FOOTER */
+  footer{padding:50px 0 60px; text-align:center;}
+  .contact-title{font-family:var(--display); font-size:clamp(24px,4vw,32px); font-weight:600; margin-bottom:14px;}
+  .contact-sub{color:var(--muted); font-size:14.5px; margin-bottom:26px;}
+  .footnote{margin-top:50px; font-family:var(--mono); font-size:12px; color:var(--muted);}
+
+  ::selection{background:var(--accent); color:#0B1220;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">janmesh<span>_</span>mokal</div>
+    <div class="navlinks">
+      <a href="#experience">experience</a>
+      <a href="#projects">projects</a>
+      <a href="#skills">skills</a>
+      <a href="#contact" class="resume-link">contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">career.sql</p>
+    <div class="console">
+      <div class="console-bar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="console-title">query — career_db</span>
+      </div>
+      <div class="console-body">
+        <span class="prompt">&gt;</span> <span id="typed-query"></span><span class="cursor" id="blinker"></span>
+        <div class="result-row" id="result-row">
+          <div class="col-label">1 row returned</div>
+          <div class="result-name">Janmesh Mokal</div>
+          <div class="result-role">Data Analyst · Ex-Software Engineer (.NET, Banking)</div>
+          <p class="result-desc">Three years building banking APIs and SQL-driven systems at Finoux Solutions, now applying that same rigor to data cleaning, dashboards, and reporting. Comfortable moving between writing the pipeline and reading what it says.</p>
+        </div>
+      </div>
+    </div>
+    <div class="hero-links">
+      <a class="btn primary" href="mailto:janmeshsmokal46@gmail.com">Email me</a>
+      <a class="btn" href="https://linkedin.com/in/janmesh-mokal" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a class="btn" href="#" id="github-link" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</header>
+
+<section id="skills">
+  <div class="wrap">
+    <p class="sec-title">skills</p>
+    <h2 class="sec-heading">What I work with</h2>
+    <p class="sec-sub">A developer's toolkit, now pointed at data.</p>
+    <div class="skill-table">
+      <div class="skill-row">
+        <div class="skill-key">analytics</div>
+        <div class="skill-val">
+          <span class="chip">SQL (Joins, CTEs)</span><span class="chip">Advanced Excel</span>
+          <span class="chip">Power BI / DAX</span><span class="chip">Python (Pandas)</span>
+        </div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-key">data skills</div>
+        <div class="skill-val">
+          <span class="chip">Data Cleaning</span><span class="chip">Data Transformation</span>
+          <span class="chip">KPI & Trend Analysis</span><span class="chip">Data Validation</span>
+        </div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-key">development</div>
+        <div class="skill-val">
+          <span class="chip">C#</span><span class="chip">.NET Core Web API</span><span class="chip">MVC</span>
+          <span class="chip">JavaScript</span><span class="chip">OutSystems</span><span class="chip">HTML/CSS</span>
+        </div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-key">testing</div>
+        <div class="skill-val">
+          <span class="chip">Postman / API Testing</span><span class="chip">Functional Testing</span>
+          <span class="chip">Regression Testing</span><span class="chip">Bug Tracking</span>
+        </div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-key">databases</div>
+        <div class="skill-val">
+          <span class="chip">MySQL</span><span class="chip">Oracle</span><span class="chip">OutSystems DB</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <p class="sec-title">experience</p>
+    <h2 class="sec-heading">Where I've worked</h2>
+    <p class="sec-sub">From building the banking systems to now analyzing the data that flows through systems like them.</p>
+
+    <div class="job">
+      <div class="job-head">
+        <span class="job-title">Data Analyst — Project-Based</span>
+        <span class="job-meta">Dec 2025 – Present · Thane</span>
+      </div>
+      <div class="job-company">Quality Software Technologies</div>
+      <ul>
+        <li>Analyzed operational, asset, and loan datasets using SQL and Advanced Excel</li>
+        <li>Cleaned, transformed, and validated data to identify trends and inconsistencies</li>
+        <li>Built Power BI dashboards and reports to support business decision-making</li>
+        <li>Applied Statistics, Python (Pandas), Excel, and Power BI to real datasets as part of ongoing Data Analytics training</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <span class="job-title">Software Engineer</span>
+        <span class="job-meta">Apr 2022 – Oct 2025 · Andheri</span>
+      </div>
+      <div class="job-company">Finoux Solutions Pvt. Ltd</div>
+      <ul>
+        <li>Developed and maintained critical banking software by implementing APIs and integrating complex SQL queries</li>
+        <li>Worked on banking applications handling large structured and transactional datasets</li>
+        <li>Collaborated closely with HDFC's technical team to enhance features and user experience</li>
+        <li>Performed API testing using Postman and validated responses for data accuracy and system reliability</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <p class="sec-title">projects</p>
+    <h2 class="sec-heading">Analytics & development work</h2>
+    <p class="sec-sub">Four projects spanning asset tracking, loan systems, HR reporting, and secure data retrieval.</p>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-schema">operations_analytics · asset_tracker</div>
+        <div class="card-title">Asset Tracker</div>
+        <ul>
+          <li>Analyzed PAN-India asset data using SQL and Excel for cleaning and validation</li>
+          <li>Built Power BI dashboards to visualize asset utilization</li>
+          <li>Developed the underlying OutSystems application and database for real-time tracking</li>
+        </ul>
+        <div class="card-tags"><span class="tag">SQL</span><span class="tag">Power BI</span><span class="tag">OutSystems</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-schema">loan_data_analysis · ml_pre_approved</div>
+        <div class="card-title">ML Pre-Approved</div>
+        <ul>
+          <li>Extracted and analyzed loan-customer data from SQL databases via APIs</li>
+          <li>Cleaned and validated loan datasets for accuracy and consistency</li>
+          <li>Developed the underlying .NET-based banking app for secure retrieval by PAN number</li>
+        </ul>
+        <div class="card-tags"><span class="tag">SQL</span><span class="tag">.NET</span><span class="tag">API</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-schema">hr_staff_reporting · menu_audit</div>
+        <div class="card-title">Menu Audit</div>
+        <ul>
+          <li>Analyzed and organized staff and contract employee data using SQL</li>
+          <li>Created SQL-based reports to reduce manual data retrieval</li>
+          <li>Supported the OutSystems application with API integration for staff details</li>
+        </ul>
+        <div class="card-tags"><span class="tag">SQL</span><span class="tag">OutSystems</span><span class="tag">API</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-schema">data_retrieval_validation · payload</div>
+        <div class="card-title">PayLoad</div>
+        <ul>
+          <li>Queried and analyzed loan datasets using File Number as input</li>
+          <li>Validated and structured data by processing JSON responses</li>
+          <li>Developed and supported .NET Core Web APIs for secure loan data retrieval</li>
+        </ul>
+        <div class="card-tags"><span class="tag">.NET Core</span><span class="tag">Web API</span><span class="tag">JSON</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <p class="sec-title">education</p>
+    <h2 class="sec-heading">Background</h2>
+    <div class="skill-table">
+      <div style="padding:4px 0;">
+        <div class="edu-row" style="padding-left:18px; padding-right:18px;">
+          <div>
+            <div class="edu-name">Data Analyst Certification</div>
+          </div>
+          <div class="edu-date">Dec 2025 – Present</div>
+        </div>
+        <div class="edu-row" style="padding-left:18px; padding-right:18px;">
+          <div>
+            <div class="edu-name">Web Development Certification</div>
+          </div>
+          <div class="edu-date">Feb 2022 – Sep 2022</div>
+        </div>
+        <div class="edu-row" style="padding-left:18px; padding-right:18px;">
+          <div>
+            <div class="edu-name">B.Sc. Information Technology</div>
+            <div class="edu-sub">VPM R Z Shah College, Mumbai</div>
+          </div>
+          <div class="edu-date">Jun 2017 – Oct 2020</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <p class="sec-title" style="justify-content:center; display:flex;">contact</p>
+    <div class="contact-title">Let's talk data — or .NET.</div>
+    <p class="contact-sub">Mumbai, India · Open to Data Analyst and .NET Developer roles</p>
+    <div class="hero-links" style="justify-content:center;">
+      <a class="btn primary" href="mailto:janmeshsmokal46@gmail.com">janmeshsmokal46@gmail.com</a>
+      <a class="btn" href="tel:+919372686916">+91 9372686916</a>
+      <a class="btn" href="https://linkedin.com/in/janmesh-mokal" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <p class="footnote">Built with HTML, CSS & a bit of SQL nostalgia · © 2026 Janmesh Mokal</p>
+  </div>
+</footer>
+
+<script>
+  const query = 'SELECT name, role, summary\nFROM career_profile\nWHERE focus = \'data_analytics\'\nLIMIT 1;';
+  const el = document.getElementById('typed-query');
+  const blinker = document.getElementById('blinker');
+  const resultRow = document.getElementById('result-row');
+  let i = 0;
+  function typeChar(){
+    if(i <= query.length){
+      el.textContent = query.slice(0, i);
+      i++;
+      setTimeout(typeChar, 18);
+    } else {
+      setTimeout(()=>{
+        blinker.style.display = 'none';
+        resultRow.classList.add('show');
+      }, 300);
+    }
+  }
+  window.addEventListener('DOMContentLoaded', () => setTimeout(typeChar, 400));
+
+  // Update this GitHub link once the repo is created — see setup guide
+  document.getElementById('github-link').href = 'https://github.com/janmesh-mokal';
+</script>
+
+</body>
+</html>
